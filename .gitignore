@@ -1,0 +1,16 @@
+# Directorios de Python y Django
+__pycache__/
+*.pyc
+*.log
+*.sqlite3
+
+# Entornos Virtuales
+venv/
+env/
+
+# Archivos de depuración de editores
+.vscode/
+.idea/
+
+# Archivos sensibles (si existen)
+local_settings.py
