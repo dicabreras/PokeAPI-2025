@@ -1,6 +1,7 @@
 This project, a simple Pokedex viewer built with the Django web framework, serves as a practical exercise in backend development, data manipulation, and responsive frontend design.
 
 🚀 Technologies Used
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Backend: Python 3 & Django
 
 Data Source: External PokeAPI (consumed via synchronous HTTP requests)
@@ -10,7 +11,7 @@ Frontend: HTML5, Bootstrap 5 (for responsive design and styling) & Vanilla JavaS
 Environment: Virtual Environments (venv)
 
 🧠 Key Learning Outcomes & Features
-
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 This project allowed me to gain hands-on experience with several core concepts:
 API Integration	Consuming   --> parsing, and standardizing data from a third-party REST API (pokeapi.co).
 Data Transformation	        --> Implementing server-side data manipulation logic, including filtering Pokémon based on criteria (Weight, Type, Height) and performing custom string operations (e.g., reversing Pokémon names).
