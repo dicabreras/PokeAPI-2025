@@ -23,12 +23,14 @@ This project, a simple Pokedex viewer built with the Django web framework, serve
 --------------------------------------
 ## 🛠️ Setup & Installation
 
-Follow these five steps to get the Pokedex running locally:
+To ensure smooth execution across all operating systems, the instructions below include a necessary step for Windows PowerShell security.
 
 | Step | Command | Purpose |
 | :--- | :--- | :--- |
-| **1. Clone Repository** | `git clone https://github.com/dicabreras/PokeAPI-2025.git` | Downloads the project files to your local machine. |
-| **2. Navigate & Create VENV** | `cd PokeAPI-2025`<br>`python -m venv venv` | Enters the project directory and creates an isolated environment. |
-| **3. Activate VENV** | `.\venv\Scripts\activate` (Windows)<br>or `source venv/bin/activate` (Linux/macOS) | Activates the virtual environment to manage dependencies. |
-| **4. Install Dependencies** | `pip install -r requirements.txt` | Installs all necessary Python libraries (e.g., Django, requests). |
-| **5. Start Server** | `python manage.py runserver` | Starts the Django development server, typically accessible at `http://127.0.0.1:8000`. |
+| **1. Clone Repository** | `git clone https://github.com/dicabreras/PokeAPI-2025.git`<br>`cd PokeAPI-2025` | Downloads the project and navigates to the directory. |
+| **2. Create VENV** | `python -m venv venv` | Creates an isolated environment, ensuring correct Windows structure (`Scripts`). |
+| **3. Security Policy (Windows ONLY)** | **Run in the VENV terminal** and execute: <br>`Set-ExecutionPolicy RemoteSigned -Scope Process` | Temporarily overrides Windows security settings, allowing the VENV activation script to run. |
+| **4. Activate VENV** | **Windows (PowerShell):** <br>`.\venv\Scripts\activate`<br>**Linux/macOS:** <br>`source venv/bin/activate` | Activates the virtual environment. |
+| **5. Install Dependencies** | `pip install -r requirements.txt` | Installs Django, Requests, and all necessary libraries from the manifest. |
+| **6. Apply Migrations** | `python manage.py migrate` | Sets up the database tables required by Django's core modules (admin, auth, sessions). |
+| **7. Start Server** | `python manage.py runserver` | Starts the Django development server, accessible at `http://127.0.0.1:8000`. |
