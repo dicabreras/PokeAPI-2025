@@ -29,8 +29,8 @@ To ensure smooth execution across all operating systems, the instructions below 
 | :--- | :--- | :--- |
 | **1. Clone Repository** | `git clone https://github.com/dicabreras/PokeAPI-2025.git`<br>`cd PokeAPI-2025` | Downloads the project and navigates to the directory. |
 | **2. Create VENV** | `python -m venv venv` | Creates an isolated environment, ensuring correct Windows structure (`Scripts`). |
-| **3. Security Policy (Windows ONLY)** | **Run in the VENV terminal** and execute: <br>`Set-ExecutionPolicy RemoteSigned -Scope Process` | Temporarily overrides Windows security settings, allowing the VENV activation script to run. |
-| **4. Activate VENV** | **Windows (PowerShell):** <br>`.\venv\Scripts\activate`<br>**Linux/macOS:** <br>`source venv/bin/activate` | Activates the virtual environment. |
+| **3. Security Policy (Windows ONLY)** | **Run in the your current terminal** and execute: <br>`Set-ExecutionPolicy RemoteSigned -Scope Process` | Temporarily overrides Windows security settings, allowing the VENV activation script to run. |
+| **4. Activate VENV** | **Windows (PowerShell) or in your current terminal:** <br>`.\venv\Scripts\activate`<br>**Linux/macOS:** <br>`source venv/bin/activate` | Activates the virtual environment. |
 | **5. Install Dependencies** | `pip install -r requirements.txt` | Installs Django, Requests, and all necessary libraries from the manifest. |
 | **6. Apply Migrations** | `python manage.py migrate` | Sets up the database tables required by Django's core modules (admin, auth, sessions). |
 | **7. Start Server** | `python manage.py runserver` | Starts the Django development server, accessible at `http://127.0.0.1:8000`. |
