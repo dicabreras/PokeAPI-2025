@@ -19,7 +19,7 @@ def pokedex_view(request):
     # 1. Obtener los datos (ahora con peso y altura numéricos)
     raw_pokemon_data = get_pokemon_data(limit=50) 
     
-    # 2. Aplicar el Requisito 4: Añadir la nueva columna (Nombre Invertido)
+    # 2. Añadir la nueva columna (Nombre Invertido)
     # ASUMIMOS que add_new_column ahora añade 'reversed_name'
     list_with_new_column = add_new_column(raw_pokemon_data)
     
@@ -29,8 +29,7 @@ def pokedex_view(request):
     context = {
         'page_title': "Pokedex - Top 50 (General)", 
         'pokemon_list': pokemon_list,
-        
-        # ✅ CORRECCIÓN A: Cabecera 'Clase de Peso' reemplazada por 'Nombre Invertido'
+
         'column_headers': ['ID', 'Nombre', 'Nombre Invertido', 'Tipo(s)', 'Altura', 'Peso'] 
     }
     
@@ -45,22 +44,21 @@ def filtered_tables_view(request):
     # 1. Obtener la fuente de datos bruta una sola vez (eficiencia)
     raw_data = get_pokemon_data(limit=50)
 
-    # --- REQUISITO 1: Peso entre 30 y 80 kg ---
+    # Peso entre 30 y 80 kg 
     # Parámetros: 30.0 < peso < 80.0
     filtered_1_raw = filter_by_weight(raw_data, 30.0, 80.0)
     # Formatear y añadir la nueva columna para la vista
     table_1 = format_pokemon_for_view(add_new_column(filtered_1_raw))
 
-    # --- REQUISITO 2: Tipo 'Grass' ---
+    #  Tipo 'Grass' 
     filtered_2_raw = filter_by_type(raw_data, 'grass')
     table_2 = format_pokemon_for_view(add_new_column(filtered_2_raw))
 
-    # --- REQUISITO 3: Tipo 'Flying' y Altura > 1.0 metro (10 dm) ---
-    # Altura > 1.0 m
+    # 'Flying' y Altura > 1.0 metro (10 dm) 
     filtered_3_raw = filter_by_type_and_height(raw_data, 'flying', 1.0)
     table_3 = format_pokemon_for_view(add_new_column(filtered_3_raw))
     
-    # ✅ CORRECCIÓN B: Cabeceras para todas las tablas deben usar 'Nombre Invertido'
+    # Cabeceras para todas las tablas 
     headers = ['ID', 'Nombre', 'Nombre Invertido', 'Tipo(s)', 'Altura', 'Peso'] 
 
     context = {

@@ -5,16 +5,15 @@ from typing import List, Dict # This improves legibility of data type
 
 POKEAPI_BASE_URL = "https://pokeapi.co/api/v2/pokemon/"
 
-def get_pokemon_data(limit: int = 50) -> List[Dict]:   # limit: number of pokemons 
-    # return a list 
+def get_pokemon_data(limit: int = 50) -> List[Dict]:   # Numero por default de pokemones a analizar;
 
     all_pokemon_details = []
     # 1. First request: Get the list of the first N = limit = 50 Pokemons (names and URLs)
     # We use 'offset' (where to start) and 'limit' (how many to get)
     try:
-        response_list = requests.get(f"{POKEAPI_BASE_URL}?offset=0&limit={limit}")
-        response_list.raise_for_status() # Throws an exception for errors 4xx/5xx
-        pokemon_list = response_list.json().get('results', [])
+        response_list = requests.get(f"{POKEAPI_BASE_URL}?offset=0&limit={limit}") # Pide los primeros 50 pokemones
+        response_list.raise_for_status() # Throws an exception for errors 4xx/5xx (HTTP errors)
+        pokemon_list = response_list.json().get('results', []) # Convierte el archivo .json obtenido de la respuesta HTTP en un diccionario de Python y luego accede a los pokemones 
     except requests.exceptions.RequestException as e:
         # This handles red errors or HTTP errors
         print(f"Error al obtener la lista de Pokémon: {e}")
@@ -28,7 +27,7 @@ def get_pokemon_data(limit: int = 50) -> List[Dict]:   # limit: number of pokemo
         
         try:
             # Usamos la URL individual que viene en la lista para obtener los detalles
-            response_detail = requests.get(poke_summary['url'])
+            response_detail = requests.get(poke_summary['url'])  # URL individual de cada pokemon
             response_detail.raise_for_status()
             detail = response_detail.json()
             
@@ -65,7 +64,7 @@ def get_pokemon_data(limit: int = 50) -> List[Dict]:   # limit: number of pokemo
 
     return all_pokemon_details
 
-def filter_by_weight(pokemon_list: List[Dict], min_weight: float, max_weight: float) -> List[Dict]:
+def filter_by_weight(pokemon_list: List[Dict], min_weight: float, max_weight: float) -> List[Dict]: 
     """
     Filtra Pokémon por un rango de peso (en kilogramos).
     """
@@ -74,7 +73,7 @@ def filter_by_weight(pokemon_list: List[Dict], min_weight: float, max_weight: fl
         if min_weight < p['weight'] < max_weight
     ]
 
-def filter_by_type(pokemon_list: List[Dict], required_type: str) -> List[Dict]:
+def filter_by_type(pokemon_list: List[Dict], required_type: str) -> List[Dict]: # Filtrado por tipo específico
     """
     Filtra Pokémon que tienen un tipo específico.
     """
@@ -84,7 +83,7 @@ def filter_by_type(pokemon_list: List[Dict], required_type: str) -> List[Dict]:
         if required_type in p['type_list']
     ]
 
-def filter_by_type_and_height(pokemon_list: List[Dict], required_type: str, min_height: float) -> List[Dict]:
+def filter_by_type_and_height(pokemon_list: List[Dict], required_type: str, min_height: float) -> List[Dict]:  #En esta linea de codigo se filtra por los atributos especificados
     """
     Filtra Pokémon por tipo y una altura mínima (en metros).
     """
@@ -94,9 +93,9 @@ def filter_by_type_and_height(pokemon_list: List[Dict], required_type: str, min_
         if required_type in p['type_list'] and p['height'] > min_height
     ]
 
-# --- FUNCIÓN DE TRANSFORMACIÓN (REQUERIMIENTO 4) ---
+# --- FUNCIÓN DE NOMBRE INVERTIDO ---
 
-def add_new_column(pokemon_list):
+def add_new_column(pokemon_list) -> List:
     """
     Añade la nueva columna 'Nombre Invertido' (reversed_name) a cada Pokémon.
     """
@@ -105,8 +104,9 @@ def add_new_column(pokemon_list):
         # Crea una copia mutable del diccionario.
         p = pokemon.copy() 
         
-        # Calcular el Nombre Invertido (Requisito 4)
+        # Calcular el Nombre Invertido
         original_name = p.get('name', '').lower()
+        
         # Invertir el nombre y capitalizar la primera letra
         p['reversed_name'] = original_name[::-1].capitalize() 
         
@@ -115,7 +115,7 @@ def add_new_column(pokemon_list):
     return processed_list
 
 
-def format_pokemon_for_view(pokemon_list):
+def format_pokemon_for_view(pokemon_list) -> List:
     """
     Formatea los campos numéricos y de lista para su visualización en HTML.
     """
@@ -130,8 +130,6 @@ def format_pokemon_for_view(pokemon_list):
         # Formateo de tipos
         p['types'] = ", ".join([t.capitalize() for t in p.get('type_list', [])])
         
-        # NOTA: Asegúrate de que aquí no se acceda a p['weight_class']
-        
         formatted_list.append(p)
     return formatted_list
 
@@ -139,4 +137,5 @@ def format_pokemon_for_view(pokemon_list):
 # Ejemplo de uso para depuración (opcional, pero útil)
 if __name__ == '__main__':
     data = get_pokemon_data(5)
-    print(data)
+    #print(data)
+    

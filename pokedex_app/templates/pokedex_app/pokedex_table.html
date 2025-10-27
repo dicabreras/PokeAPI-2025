@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="es" data-bs-theme="light"> <head>
+<html lang="es" data-bs-theme="light"> 
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
@@ -15,7 +16,6 @@
     <style>
         /* Estilos generales */
         body { 
-            /* Usamos bg-body de Bootstrap para que cambie en modo oscuro */
             background-color: var(--bs-body-bg); 
         } 
         .main-container { 
@@ -30,15 +30,18 @@
         
         /* Estilo de la cabecera (Tabla separada) */
         .header-table th {
-            /* Usamos un color oscuro que contraste bien en ambos modos */
             background-color: #343a40; 
             color: white;
             position: static; 
         }
-
-        /* Quitar margen inferior del header table */
-        .mb-0 {
-            margin-bottom: 0 !important;
+        
+        /* ESTILO CLAVE: OCULTA TODAS LAS CELDAS CON ESTA CLASE POR DEFECTO */
+        .hidden-col {
+            display: none; 
+        }
+        /* Las celdas de la tabla (td) deben tener display: table-cell para mostrarse */
+        .col-reversed-name {
+            display: none; /* Asegura que las celdas de datos estén ocultas */
         }
     </style>
 </head>
@@ -46,24 +49,35 @@
     <div class="container main-container">
         
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="text-primary mb-0">📊 Pokedex - Top 50 Pokémon</h1>
-            <button class="btn btn-outline-secondary" id="theme-toggle">
-                <span id="theme-icon">☀️</span> Modo Claro
-            </button>
+            <h1 class="text-primary mb-0">📊 Pokedex - Top 100 Pokémon</h1>
+            <div class="d-flex gap-2">
+                <button class="btn btn-info text-white" id="toggle-reversed-name">
+                    Ver Nombre Invertido
+                </button>
+                <button class="btn btn-outline-secondary" id="theme-toggle">
+                    <span id="theme-icon">☀️</span> Modo Claro
+                </button>
+            </div>
         </div>
         
         <div class="text-center mt-4 mb-4">
             <a href="{% url 'filtered_tables' %}" class="btn btn-primary btn-lg shadow">
-                🔎 Ver Tablas de Análisis y Filtros
+                🧪 Ver Tablas de Análisis y Filtros
             </a>
         </div>
         
         {% if pokemon_list %}
-        <div class="card shadow p-3 mb-5 bg-body rounded"> <table class="table header-table mb-0 table-striped"> 
+        <div class="card shadow p-3 mb-5 bg-body rounded"> 
+            
+            <table class="table header-table mb-0 table-striped"> 
                 <thead>
                     <tr>
                         {% for header in column_headers %}
-                            <th scope="col" class="text-center" style="width: 16.66%;">{{ header }}</th>
+                            <th scope="col" 
+                                class="text-center {% if header == 'Nombre Invertido' %}col-reversed-name hidden-col{% endif %}" 
+                                style="width: 16.66%;">
+                                {{ header }}
+                            </th>
                         {% endfor %} 
                     </tr>
                 </thead>
@@ -76,7 +90,9 @@
                         <tr>
                             <td class="text-center" style="width: 16.66%;">{{ pokemon.id }}</td>
                             <td style="width: 16.66%;"><strong>{{ pokemon.name }}</strong></td> 
-                            <td style="width: 16.66%;">{{ pokemon.reversed_name }}</td> 
+                            
+                            <td class="col-reversed-name" style="width: 16.66%;">{{ pokemon.reversed_name }}</td> 
+                            
                             <td style="width: 16.66%;">{{ pokemon.types }}</td>
                             <td class="text-center" style="width: 16.66%;">{{ pokemon.height }}</td>
                             <td class="text-center" style="width: 16.66%;">{{ pokemon.weight }}</td>
@@ -98,11 +114,11 @@
     
     <script>
         (function() {
+            // Lógica para Modo Oscuro (Se mantiene sin cambios) 
             const themeToggle = document.getElementById('theme-toggle');
             const htmlElement = document.documentElement;
             const themeIcon = document.getElementById('theme-icon');
 
-            // 1. Cargar la preferencia guardada o el modo por defecto (claro)
             const savedTheme = localStorage.getItem('theme') || 'light';
             htmlElement.setAttribute('data-bs-theme', savedTheme);
 
@@ -115,20 +131,42 @@
                     themeToggle.innerHTML = '☀️ Modo Claro';
                 }
             }
-
-            // Aplicar el estado inicial del botón
             updateToggle(savedTheme);
 
-            // 2. Manejar el evento de clic
-            themeToggle.addEventListener('click', () => {
-                const currentTheme = htmlElement.getAttribute('data-bs-theme');
-                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-                
-                // 3. Aplicar el nuevo tema y guardarlo
-                htmlElement.setAttribute('data-bs-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
-                updateToggle(newTheme);
-            });
+            if (themeToggle) {
+                themeToggle.addEventListener('click', () => {
+                    const currentTheme = htmlElement.getAttribute('data-bs-theme');
+                    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                    htmlElement.setAttribute('data-bs-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                    updateToggle(newTheme);
+                });
+            }
+
+
+            // Lógica para Columna Opcional
+            const toggleButton = document.getElementById('toggle-reversed-name');
+            // Seleccionamos todas las celdas (th y td) con la clase
+            const reversedCols = document.querySelectorAll('.col-reversed-name');
+            
+            function toggleReversedName() {
+                // Comprobamos el estado actual. Si el primer elemento visible es 'none', están ocultas.
+                const isHidden = reversedCols[0].style.display === 'none';
+
+                reversedCols.forEach(col => {
+                    // Si estaban ocultas, las mostramos como 'table-cell'. Si estaban visibles, las ocultamos.
+                    col.style.display = isHidden ? 'table-cell' : 'none';
+                });
+
+                toggleButton.textContent = isHidden ? 'Ocultar Nombre Invertido' : 'Ver Nombre Invertido';
+                toggleButton.classList.toggle('btn-success', isHidden);
+                toggleButton.classList.toggle('btn-info', !isHidden);
+            }
+
+            if (toggleButton) {
+                toggleButton.addEventListener('click', toggleReversedName);
+            }
+            // NOTA: La columna se oculta primariamente por el CSS (.hidden-col y .col-reversed-name)
         })();
     </script>
 </body>
